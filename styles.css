@@ -276,8 +276,9 @@ svg { width: 20px; height: 20px; display: block; fill: none; stroke: currentColo
 .note-card { min-height: 205px; display: flex; flex-direction: column; padding: 20px; }
 .note-card:nth-child(4n+2) { background: var(--jade-50); border-color: #d6e5dc; }
 .note-card h3 { margin: 0 0 10px; font-family: "Playfair Display", "Noto Sans SC", serif; font-size: 18px; }
-.note-card p { display: -webkit-box; overflow: hidden; margin: 0; color: #555e6c; white-space: pre-wrap; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
+.note-card p { margin: 0; color: #555e6c; white-space: pre-wrap; line-height: 1.68; overflow-wrap: anywhere; }
 .note-card footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 16px; color: var(--muted); font-size: 10px; }
+.note-actions { display: flex; gap: 6px; }
 
 .daily-page-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(300px, .55fr); gap: 20px; }
 .daily-page-grid .daily-card { min-height: 520px; padding: 34px; }

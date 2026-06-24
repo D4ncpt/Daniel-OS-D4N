@@ -1,6 +1,6 @@
 import { storage, uid, initializeStorage } from "./store.js?v=5";
 import { castNumberWithTime, castToDailyCard, doubleHour, practicalGuidance } from "./meihua.js?v=4";
-import { cfaModules, cfaTopicCount } from "./cfa-data.js?v=3";
+import { cfaModules, cfaTopicCount } from "./cfa-data.js?v=4";
 import { DANIEL_SCENARIOS, buildDanielReading } from "./daniel-toolkit.js?v=5";
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -153,7 +153,7 @@ function cfaState() {
 function cfaProgressCard() {
   const { moduleStats, currentIndex, done, percent } = cfaState();
   const current = moduleStats[currentIndex] || moduleStats.at(-1);
-  return `<article class="card cfa-card"><div class="card-head"><div><h2>CFA 学习路径</h2><p>${currentIndex === -1 ? "四个阶段已完成" : `当前：${escapeHTML(current.shortTitle || current.title)}`}</p></div><button class="text-link" data-route-link="cfa">继续学习<span data-icon="arrow"></span></button></div><div class="cfa-mini-progress"><strong>${percent}%</strong><span>${done} / ${cfaTopicCount} topics</span></div><div class="progress-track"><span style="width:${percent}%"></span></div><div class="cfa-mini-steps">${moduleStats.map((module, index) => `<span class="${module.complete ? "done" : index === currentIndex ? "current" : ""}" title="${escapeHTML(module.title)}">${index + 1}</span>`).join("")}</div></article>`;
+  return `<article class="card cfa-card"><div class="card-head"><div><h2>CFA 学习路径</h2><p>${currentIndex === -1 ? "10 个 Section 已完成" : `当前：${escapeHTML(current.shortTitle || current.title)}`}</p></div><button class="text-link" data-route-link="cfa">继续学习<span data-icon="arrow"></span></button></div><div class="cfa-mini-progress"><strong>${percent}%</strong><span>${done} / ${cfaTopicCount} lessons</span></div><div class="progress-track"><span style="width:${percent}%"></span></div><div class="cfa-mini-steps">${moduleStats.map((module, index) => `<span class="${module.complete ? "done" : index === currentIndex ? "current" : ""}" title="${escapeHTML(module.title)}">${index + 1}</span>`).join("")}</div></article>`;
 }
 
 // Views only read state and return markup; shared event handlers perform all mutations.
@@ -202,8 +202,8 @@ function tasksView() {
 function cfaView() {
   const { completed, moduleStats, currentIndex, done, percent } = cfaState();
   const current = moduleStats[currentIndex];
-  return `<div class="page-intro cfa-intro"><div><p class="eyebrow">CFA STUDY PATH</p><h2>按顺序建立金融分析框架</h2><p>10 stages · Quant → Economics → FSA → Issuers → Investments → Ethics</p></div><span class="badge jade">${done} / ${cfaTopicCount} TOPICS</span></div>
-    <section class="card cfa-hero"><div><span class="cfa-kicker">${current ? `PHASE ${String(currentIndex + 1).padStart(2, "0")}` : "PATH COMPLETE"}</span><h3>${current ? escapeHTML(current.shortTitle || current.title) : "学习路径已完成"}</h3><p>${current ? escapeHTML(current.description) : "四个阶段均已完成，可以从第一阶段开始循环复习。"}</p></div><div class="cfa-overall"><strong>${percent}%</strong><span>Overall progress</span><div class="progress-track"><span style="width:${percent}%"></span></div></div></section>
+  return `<div class="page-intro cfa-intro"><div><p class="eyebrow">CFA STUDY PATH</p><h2>按 LinkedIn 课程 Section 推进</h2><p>10 sections · Ethics → Quant → Economics → FSA → Issuers → Portfolio</p></div><span class="badge jade">${done} / ${cfaTopicCount} LESSONS</span></div>
+    <section class="card cfa-hero"><div><span class="cfa-kicker">${current ? `SECTION ${String(currentIndex + 1).padStart(2, "0")}` : "PATH COMPLETE"}</span><h3>${current ? escapeHTML(current.shortTitle || current.title) : "学习路径已完成"}</h3><p>${current ? escapeHTML(current.description) : "10 个 Section 均已完成，可以从第一阶段开始循环复习。"}</p></div><div class="cfa-overall"><strong>${percent}%</strong><span>Overall progress</span><div class="progress-track"><span style="width:${percent}%"></span></div></div></section>
     <section class="cfa-roadmap">${moduleStats.map((module, index) => {
       const locked = currentIndex !== -1 && index > currentIndex;
       const isCurrent = index === currentIndex;
@@ -228,9 +228,9 @@ function applicationCard(app) {
 }
 
 function notesView() {
-  const notes = storage.get("notes").sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+  const notes = storage.get("notes").sort((a,b) => (b.updatedAt || b.createdAt).localeCompare(a.updatedAt || a.createdAt));
   return `<div class="page-intro"><div><h2>备忘录</h2><p>捕捉还没来得及成为计划的想法。</p></div><button class="primary-button" data-open="note"><span data-icon="plus"></span>新建备忘</button></div>
-    <section class="notes-grid">${notes.map((note) => `<article class="card note-card" data-id="${note.id}"><h3>${escapeHTML(note.title)}</h3><p>${escapeHTML(note.content)}</p><footer><time>${nowLabel(note.createdAt)}</time><button class="icon-button small" data-action="delete-note" aria-label="删除备忘录"><span data-icon="trash"></span></button></footer></article>`).join("") || '<div class="empty-state"><div><strong>没有备忘录</strong>随手记下一条想法，不必先把它想完整。</div></div>'}</section>`;
+    <section class="notes-grid">${notes.map((note) => `<article class="card note-card" data-id="${note.id}"><h3>${escapeHTML(note.title)}</h3><p>${escapeHTML(note.content)}</p><footer><time>${nowLabel(note.updatedAt || note.createdAt)}</time><div class="note-actions"><button class="icon-button small" data-action="edit-note" aria-label="编辑备忘录"><span data-icon="edit"></span></button><button class="icon-button small" data-action="delete-note" aria-label="删除备忘录"><span data-icon="trash"></span></button></div></footer></article>`).join("") || '<div class="empty-state"><div><strong>没有备忘录</strong>随手记下一条想法，不必先把它想完整。</div></div>'}</section>`;
 }
 
 function dailyModeSwitch() {
@@ -313,8 +313,8 @@ function openModal(type, item = null) {
     title.textContent = "添加任务";
     content.innerHTML = `<form id="task-form"><div class="form-grid">${field("title","任务标题","text","","full")}${field("date","日期","date",today())}<div class="field"><label for="category">分类</label><select id="category" name="category">${Object.entries(categoryLabels).map(([key,label]) => `<option value="${key}">${label}</option>`).join("")}</select></div><div class="field"><label for="priority">优先级</label><select id="priority" name="priority"><option value="high">高</option><option value="medium" selected>中</option><option value="low">低</option></select></div>${field("note","备注","textarea","","full")}</div><div class="form-actions"><button type="button" class="secondary-button" data-close-modal>取消</button><button class="primary-button">保存任务</button></div></form>`;
   } else if (type === "note") {
-    title.textContent = "新建备忘录";
-    content.innerHTML = `<form id="note-form"><div class="form-grid">${field("title","标题","text","","full")}${field("content","内容","textarea","","full")}</div><div class="form-actions"><button type="button" class="secondary-button" data-close-modal>取消</button><button class="primary-button">保存备忘</button></div></form>`;
+    title.textContent = item ? "编辑备忘录" : "新建备忘录";
+    content.innerHTML = `<form id="note-form" data-id="${item?.id || ""}"><div class="form-grid">${field("title","标题","text",item?.title || "","full")}${field("content","内容","textarea",item?.content || "","full")}</div><div class="form-actions"><button type="button" class="secondary-button" data-close-modal>取消</button><button class="primary-button">保存备忘</button></div></form>`;
   } else {
     title.textContent = item ? "编辑投递" : "新增投递";
     content.innerHTML = `<form id="application-form" data-id="${item?.id || ""}"><div class="form-grid">${field("company","公司名","text",item?.company || "")}${field("role","岗位名称","text",item?.role || "")}${field("location","地点","text",item?.location || "")}${field("applicationDate","申请日期","date",item?.applicationDate || today())}${field("deadline","截止日期","date",item?.deadline || "")}<div class="field"><label for="status">状态</label><select id="status" name="status">${statusOptions(item?.status || "想投递")}</select></div>${field("contact","联系人","text",item?.contact || "")}${field("nextAction","下一步行动","text",item?.nextAction || "")}${field("notes","备注","textarea",item?.notes || "","full")}</div><div class="form-actions"><button type="button" class="secondary-button" data-close-modal>取消</button><button class="primary-button">保存投递</button></div></form>`;
@@ -384,6 +384,7 @@ document.addEventListener("click", (event) => {
   if (action.dataset.action === "toggle-cfa-topic") { const topicId = action.dataset.topicId; const progress = storage.get("cfaProgress"); const next = progress.includes(topicId) ? progress.filter((entry) => entry !== topicId) : [...progress, topicId]; storage.set("cfaProgress", next); toast(progress.includes(topicId) ? "已取消完成标记" : "学习进度已保存"); route(); }
   if (action.dataset.action === "delete-task") { storage.remove("tasks", id); toast("任务已删除"); route(); }
   if (action.dataset.action === "delete-note") { storage.remove("notes", id); toast("备忘录已删除"); route(); }
+  if (action.dataset.action === "edit-note") openModal("note", storage.get("notes").find((entry) => entry.id === id));
   if (action.dataset.action === "delete-application") { storage.remove("applications", id); toast("投递记录已删除"); route(); }
   if (action.dataset.action === "edit-application") openModal("application", storage.get("applications").find((entry) => entry.id === id));
   if (action.dataset.action === "delete-summary") { storage.remove("summaries", id); toast("总结已删除"); route(); }
@@ -423,7 +424,12 @@ document.addEventListener("submit", (event) => {
     closeModal(); toast(`已识别为${smartLabels[parsed.type]}并添加`); location.hash = parsed.type === "application" ? "career" : parsed.type === "summary" ? "summary" : parsed.type === "note" ? "notes" : "tasks"; route();
   }
   if (form.id === "task-form") { if (!data.title.trim() || !data.date) return toast("请填写任务标题和日期"); storage.add("tasks", { id: uid(), ...data, title: data.title.trim(), completed: false, createdAt: new Date().toISOString() }); closeModal(); toast("任务已保存"); route(); }
-  if (form.id === "note-form") { if (!data.title.trim() || !data.content.trim()) return toast("请填写标题和内容"); storage.add("notes", { id: uid(), title: data.title.trim(), content: data.content.trim(), createdAt: new Date().toISOString() }); closeModal(); toast("备忘录已保存"); route(); }
+  if (form.id === "note-form") {
+    if (!data.title.trim() || !data.content.trim()) return toast("请填写标题和内容");
+    const note = { title: data.title.trim(), content: data.content.trim(), updatedAt: new Date().toISOString() };
+    form.dataset.id ? storage.update("notes", form.dataset.id, note) : storage.add("notes", { id: uid(), ...note, createdAt: new Date().toISOString() });
+    closeModal(); toast("备忘录已保存"); route();
+  }
   if (form.id === "application-form") { if (!data.company.trim() || !data.role.trim()) return toast("请填写公司和岗位"); const item = { ...data, company: data.company.trim(), role: data.role.trim(), updatedAt: new Date().toISOString() }; form.dataset.id ? storage.update("applications", form.dataset.id, item) : storage.add("applications", { id: uid(), ...item, createdAt: new Date().toISOString() }); closeModal(); toast("投递记录已保存"); route(); }
   if (form.id === "summary-form") { if (!data.content.trim()) return toast("请写下总结内容"); storage.add("summaries", { id: uid(), type: summaryFilter, date: data.date, content: data.content.trim(), createdAt: new Date().toISOString() }); toast("总结已保存"); route(); }
   if (form.id === "daily-number-form") { const number = Number(data.number); if (!Number.isSafeInteger(number) || number < 1) return toast("请输入大于 0 的整数"); getDailyCard(number); toast("起卦完成，已生成本卦与变卦"); route(); }
