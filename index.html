@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#071e41" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="D4NOS" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="D4NOS 个人工作台" />
+    <title>D4NOS</title>
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css?v=6" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <a class="brand" href="#dashboard" aria-label="D4NOS 首页">
+          <span class="brand-mark">D4N</span>
+          <span><strong>D4NOS</strong><small>Daniel's operating system</small></span>
+        </a>
+        <nav class="nav-list" id="main-nav">
+          <a class="nav-item active" href="#dashboard" data-route="dashboard"><span data-icon="grid"></span>今日总览</a>
+          <a class="nav-item" href="#tasks" data-route="tasks"><span data-icon="check"></span>日历与任务</a>
+          <a class="nav-item" href="#cfa" data-route="cfa"><span data-icon="book"></span>CFA 学习</a>
+          <a class="nav-item" href="#career" data-route="career"><span data-icon="briefcase"></span>职业投递</a>
+          <a class="nav-item" href="#notes" data-route="notes"><span data-icon="note"></span>备忘录</a>
+          <a class="nav-item" href="#daily" data-route="daily"><span data-icon="sun"></span>每日卡片</a>
+          <a class="nav-item" href="#summary" data-route="summary"><span data-icon="chart"></span>进度总结</a>
+        </nav>
+        <div class="sidebar-foot">
+          <span class="status-dot"></span>
+          <div><strong>仅保存在此设备</strong><small>LocalStorage 已启用</small></div>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <button class="icon-button mobile-menu" id="mobile-menu" type="button" aria-label="打开导航" aria-expanded="false"><span data-icon="menu"></span></button>
+          <div><p class="eyebrow" id="page-eyebrow">D4NOS / TODAY</p><h1 id="page-title">今日总览</h1></div>
+          <div class="topbar-actions">
+            <span class="today-chip" id="today-chip"></span>
+            <button class="primary-button" id="quick-add" type="button" aria-label="智能添加"><span data-icon="spark"></span><span>智能添加</span></button>
+          </div>
+        </header>
+        <main id="main-content" tabindex="-1"></main>
+      </div>
+    </div>
+
+    <nav class="bottom-nav" id="bottom-nav" aria-label="手机导航">
+      <a class="bottom-nav-item active" href="#dashboard" data-route="dashboard"><span data-icon="grid"></span><span>总览</span></a>
+      <a class="bottom-nav-item" href="#tasks" data-route="tasks"><span data-icon="check"></span><span>任务</span></a>
+      <a class="bottom-nav-item" href="#cfa" data-route="cfa"><span data-icon="book"></span><span>CFA</span></a>
+      <a class="bottom-nav-item" href="#career" data-route="career"><span data-icon="briefcase"></span><span>投递</span></a>
+      <button class="bottom-nav-item" type="button" data-mobile-more aria-label="打开更多页面"><span data-icon="menu"></span><span>更多</span></button>
+    </nav>
+
+    <aside class="install-prompt" id="install-prompt" aria-label="安装 D4NOS" hidden>
+      <img src="./icons/icon-192.png" alt="" width="42" height="42" />
+      <div><strong>把 D4NOS 放到主屏幕</strong><p>像打开自己的 App 一样进入工作台。</p></div>
+      <button class="install-button" id="install-action" type="button">Install</button>
+      <button class="icon-button small" id="install-dismiss" type="button" aria-label="关闭安装提示"><span data-icon="close"></span></button>
+    </aside>
+
+    <div class="modal-layer" id="modal-layer" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-head"><div><p class="eyebrow" id="modal-eyebrow">NEW ENTRY</p><h2 id="modal-title"></h2></div><button class="icon-button" type="button" data-close-modal aria-label="关闭"><span data-icon="close"></span></button></div>
+        <div id="modal-content"></div>
+      </section>
+    </div>
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+    <script type="module" src="src/app.js?v=10"></script>
+  </body>
+</html>
