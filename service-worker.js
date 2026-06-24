@@ -1,4 +1,4 @@
-const CACHE_NAME = "d4nos-v9";
+const CACHE_NAME = "d4nos-v10";
 const scopedURL = (path) => new URL(path, self.registration.scope).href;
 const APP_SHELL_URL = scopedURL("./index.html");
 const CORE_ASSETS = [
@@ -6,9 +6,9 @@ const CORE_ASSETS = [
   "./index.html",
   "./styles.css?v=6",
   "./manifest.json",
-  "./src/app.js?v=9",
+  "./src/app.js?v=10",
   "./src/store.js?v=5",
-  "./src/cfa-data.js?v=4",
+  "./src/cfa-data.js?v=5",
   "./src/meihua.js?v=4",
   "./src/daniel-toolkit.js?v=5",
   "./src/hexagrams.js",

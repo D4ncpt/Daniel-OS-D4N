@@ -1,6 +1,6 @@
 import { storage, uid, initializeStorage } from "./store.js?v=5";
 import { castNumberWithTime, castToDailyCard, doubleHour, practicalGuidance } from "./meihua.js?v=4";
-import { cfaModules, cfaTopicCount } from "./cfa-data.js?v=4";
+import { cfaModules, cfaTopicCount } from "./cfa-data.js?v=5";
 import { DANIEL_SCENARIOS, buildDanielReading } from "./daniel-toolkit.js?v=5";
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -202,8 +202,8 @@ function tasksView() {
 function cfaView() {
   const { completed, moduleStats, currentIndex, done, percent } = cfaState();
   const current = moduleStats[currentIndex];
-  return `<div class="page-intro cfa-intro"><div><p class="eyebrow">CFA STUDY PATH</p><h2>按 LinkedIn 课程 Section 推进</h2><p>10 sections · Ethics → Quant → Economics → FSA → Issuers → Portfolio</p></div><span class="badge jade">${done} / ${cfaTopicCount} LESSONS</span></div>
-    <section class="card cfa-hero"><div><span class="cfa-kicker">${current ? `SECTION ${String(currentIndex + 1).padStart(2, "0")}` : "PATH COMPLETE"}</span><h3>${current ? escapeHTML(current.shortTitle || current.title) : "学习路径已完成"}</h3><p>${current ? escapeHTML(current.description) : "10 个 Section 均已完成，可以从第一阶段开始循环复习。"}</p></div><div class="cfa-overall"><strong>${percent}%</strong><span>Overall progress</span><div class="progress-track"><span style="width:${percent}%"></span></div></div></section>
+  return `<div class="page-intro cfa-intro"><div><p class="eyebrow">CFA STUDY PATH</p><h2>按你的备考顺序推进</h2><p>10 parts · Quant → Economics → FSA → Issuers → Investments → Ethics</p></div><span class="badge jade">${done} / ${cfaTopicCount} TOPICS</span></div>
+    <section class="card cfa-hero"><div><span class="cfa-kicker">${current ? `PART ${String(currentIndex + 1).padStart(2, "0")}` : "PATH COMPLETE"}</span><h3>${current ? escapeHTML(current.shortTitle || current.title) : "学习路径已完成"}</h3><p>${current ? escapeHTML(current.description) : "10 个 part 均已完成，可以从第一阶段开始循环复习。"}</p></div><div class="cfa-overall"><strong>${percent}%</strong><span>Overall progress</span><div class="progress-track"><span style="width:${percent}%"></span></div></div></section>
     <section class="cfa-roadmap">${moduleStats.map((module, index) => {
       const locked = currentIndex !== -1 && index > currentIndex;
       const isCurrent = index === currentIndex;
