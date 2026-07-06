@@ -1,0 +1,49 @@
+name: Daily Chinese Almanac
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  send-daily-almanac:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Tokyo
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install free local almanac dependency
+        run: pip install -r requirements.txt
+
+      - name: Generate daily almanac JSON and logs
+        run: python src/generate_almanac.py
+
+      - name: Send Telegram notification
+        run: python src/send_telegram.py
+
+      - name: Upload generated almanac files
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-almanac-${{ github.run_id }}
+          path: |
+            data/*.json
+            logs/*.md
+
+      - name: Commit generated data and logs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data logs
+          git diff --cached --quiet || git commit -m "Add daily almanac $(date +%F)"
+          git push
