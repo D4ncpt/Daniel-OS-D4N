@@ -1,0 +1,52 @@
+{
+  "date": "2026-07-06",
+  "timezone": "Asia/Tokyo",
+  "lunar_date": "丙午年 五月廿二",
+  "ganzhi": {
+    "year": "丙午年",
+    "month": "甲午月",
+    "day": "辛巳日"
+  },
+  "solar_term": "近夏至",
+  "overall_rating": "小凶",
+  "rating_stars": "★★☆☆☆",
+  "summary": "今天以保守为主，先稳住情绪和现金流。",
+  "suitable": [
+    "嫁娶",
+    "冠笄",
+    "修造"
+  ],
+  "avoid": [
+    "祈福",
+    "开光",
+    "掘井"
+  ],
+  "directions": {
+    "wealth": "正东",
+    "joy": "西南",
+    "blessing": "西北"
+  },
+  "colors": {
+    "lucky": [
+      "黑色",
+      "米白"
+    ],
+    "avoid": [
+      "荧光色"
+    ]
+  },
+  "study_advice": "适合补基础概念，不急着追新知识。",
+  "work_advice": "推进已有事项，重要沟通先写清楚结论。",
+  "finance_advice": "适合研究标的和复盘账本，不适合重仓。",
+  "daily_learning": {
+    "topic": "宜忌",
+    "text": "宜忌是传统日课的行动提示。今天只取其轻量参考，把它转成学习、沟通和财务上的小提醒。"
+  },
+  "maxim": {
+    "text": "胜兵先胜而后战。",
+    "author": "孙子",
+    "domain": "兵家",
+    "source": "《孙子兵法·形篇》"
+  },
+  "source": "lunar-python"
+}
